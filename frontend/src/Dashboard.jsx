@@ -26,7 +26,7 @@ function Dashboard() {
   return (
     <>
      <Navigation />
-    <div className="container mt-5">
+    <div className="container  s mt-5">
       <h2>Willkommen, {username}</h2>
       <CreateProject />
        <ProjectList />
