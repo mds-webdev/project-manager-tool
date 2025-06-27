@@ -1,36 +1,47 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navigation from './Navigation';
-import CreateProject from './CreateProject';
-import ProjectList from './ProjectList';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navigation from "./Navigation";
+import CreateProject from "./CreateProject";
+import ProjectList from "./ProjectList";
 
 function Dashboard() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/auth/status', { credentials: 'include' })
-      .then(res => {
+    fetch("http://localhost:5000/auth/status", { credentials: "include" })
+      .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         setUsername(data.username);
       })
       .catch(() => {
         // Wenn nicht eingeloggt → zurück zum Login
-        navigate('/');
+        navigate("/");
       });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/me", { credentials: "include" })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Nicht eingeloggt");
+      })
+      .then((data) => setUser(data))
+      .catch((err) => console.warn("⚠️", err));
   }, []);
 
   return (
     <>
-     <Navigation />
-    <div className="container mt-5">
-      <h2>Willkommen, {username}</h2>
-      <CreateProject />
-       <ProjectList />
-    </div>
+      <Navigation />
+      <div className="container mt-5">
+        <h2>Willkommen, {username}</h2>
+        <CreateProject />
+        {user && user.username && <ProjectList loggedInUser={user.username} />}
+      </div>
     </>
   );
 }

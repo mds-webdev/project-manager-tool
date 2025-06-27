@@ -14,7 +14,7 @@ function Navigation() {
 
   return (
     <nav className="navbar navbar-light bg-light px-3">
-      <span className="navbar-brand">🛠️ DevManager</span>
+      <span className="navbar-brand">🛠️ Gildner Projekt Manager</span>
       <button className="btn btn-outline-danger" onClick={handleLogout}>
         Logout
       </button>
