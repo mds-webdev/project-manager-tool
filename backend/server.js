@@ -3,6 +3,7 @@ const cors = require("cors");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const Project = require("./models/Project");
+const User = require('./models/User'); // ⬅️ falls nicht bereits importiert
 require("dotenv").config();
 
 const app = express();
@@ -199,6 +200,45 @@ app.delete('/api/projects/:projectId/comments/:index', async (req, res) => {
     res.status(500).json({ message: 'Löschfehler' });
   }
 });
+
+//BENUTZER ROLLEN VERWALTEN
+app.get('/api/seed-users', async (req, res) => {
+  try {
+    await User.deleteMany({});
+    await User.insertMany([
+      { username: "mario", password: "123", role: "programmierer" },
+      { username: "anna", password: "abc", role: "designer" },
+      { username: "tim", password: "xyz", role: "content" },
+      { username: "lara", password: "admin", role: "admin" }
+    ]);
+    res.send('Benutzer eingefügt ✅');
+  } catch (err) {
+    res.status(500).send('Fehler beim Seed');
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'username role'); // Nur wichtige Felder
+    res.json(users);
+  } catch (err) {
+    console.error('❌ Fehler beim Laden der Benutzer:', err);
+    res.status(500).json({ message: 'Fehler beim Laden der Benutzer' });
+  }
+});
+
+app.put('/api/users/:id/role', async (req, res) => {
+  const { role } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(req.params.id, { role });
+    res.status(200).json({ message: 'Rolle geändert' });
+  } catch (err) {
+    console.error('❌ Fehler beim Rollen-Update:', err);
+    res.status(500).json({ message: 'Fehler beim Rollenwechsel' });
+  }
+});
+
 
 
 

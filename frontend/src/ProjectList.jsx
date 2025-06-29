@@ -212,40 +212,40 @@ function ProjectList({ loggedInUser }) {
                   </button>
                 </div>
                 {/* Kommentare */}
-                <div className="mt-3 ms-3 border-start ps-3 w-100">
-                  <h6>Kommentare</h6>
-                  {p.comments?.length > 0 ? (
-                    <ul className="list-unstyled">
-                      {p.comments.map((comment, idx) => (
-                        <li key={idx} className="mb-2">
-                          <strong>{comment.author}</strong>{" "}
-                          {userMap[comment.author] && (
-                            <span
-                              className={`badge bg-${roleInfo[userMap[comment.author]]?.color} ms-2`}
-                            >
-                              {roleInfo[userMap[comment.author]]?.icon}{" "}
-                              {roleInfo[userMap[comment.author]]?.label}
-                            </span>
-                          )}{" "}
-                          <small className="text-muted">
-                            ({new Date(comment.createdAt).toLocaleString()})
-                          </small>
-                          {comment.author === loggedInUser && (
-                            <button
-                              className="btn btn-sm btn-link text-decoration-none ms-2"
-                              onClick={() => handleCommentDelete(p._id, idx)}
-                            >
-                              🗑
-                            </button>
-                          )}
-                          <br />
-                          {comment.text}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-muted">Noch keine Kommentare</p>
-                  )}
+                <div className="ms-3 border-start ps-3 w-100">
+              <h6>Kommentare</h6>
+              {p.comments?.length > 0 ? (
+                <ul className="list-unstyled">
+                  {p.comments.map((comment, idx) => (
+                    <li key={idx} className="mb-2">
+                      <strong>{comment.author}</strong>{" "}
+                      {userMap[comment.author] && (
+                        <span
+                          className={`badge bg-${roleInfo[userMap[comment.author]]?.color} ms-2`}
+                        >
+                          {roleInfo[userMap[comment.author]]?.icon}{" "}
+                          {roleInfo[userMap[comment.author]]?.label}
+                        </span>
+                      )}{" "}
+                      <small className="text-muted">
+                        ({new Date(comment.createdAt).toLocaleString()})
+                      </small>
+                      {comment.author === loggedInUser && (
+                        <button
+                          className="btn btn-sm btn-link text-decoration-none ms-2"
+                          onClick={() => handleCommentDelete(p._id, idx)}
+                        >
+                          🗑
+                        </button>
+                      )}
+                      <br />
+                      {comment.text}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-muted">Noch keine Kommentare</p>
+              )}
 
                   <div className="d-flex mt-2">
                     <input
